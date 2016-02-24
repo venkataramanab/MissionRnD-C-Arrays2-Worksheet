@@ -15,13 +15,58 @@ NOTES:
 */
 
 #include <iostream>
-
 struct transaction {
 	int amount;
 	char date[11];
 	char description[20];
 };
-
+bool _isEqual(char *Arr, char *date);
+bool _isOlder(char *A, char *B);
 struct transaction * sortedArraysCommonElements(struct transaction *A, int ALen, struct transaction *B, int BLen) {
+	struct transaction *result = NULL;
+	int k = 0;
+	if ((A != NULL) && (B != NULL) && (ALen > 0) && (BLen > 0)){
+		for (int i = 0; i < ALen; i++){
+			for (int j = 0; j < BLen; j++){
+				if (!_isOlder(A[i].date, B[j].date)){
+					if (_isEqual(A[i].date, B[j].date)){
+						result = (struct transaction *)realloc(result, sizeof(struct transaction)*(k + 1));
+						result[k++] = B[j];
+						break;
+					}
+					else{
+						break;
+					}
+				}
+			}
+		}
+		if (k>0){
+			return result;
+		}
+	}
 	return NULL;
+}
+bool _isEqual(char *Arr, char *date){
+	int count = 0;
+	int ptr[8] = { 6, 7, 8, 9, 3, 4, 0, 1 };
+	for (int i = 0; i < 8; i++){
+		if (date[ptr[i]] == Arr[ptr[i]]){
+			count++;
+		}
+	}
+	if (count == 8){
+		return true;
+	}
+	return false;
+}
+bool _isOlder(char *A, char *B){
+	int ptr[8] = { 6, 7, 8, 9, 3, 4, 0, 1 };
+	for (int i = 0; i < 8; i++){
+		if (B[ptr[i]] != A[ptr[i]]){
+			if (B[ptr[i]] < A[ptr[i]])
+				return true;
+			break;
+		}
+	}
+	return false;
 }
